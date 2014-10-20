@@ -1,7 +1,7 @@
 ServiceFactory = (function () {
     return {
         useStubData: true,
-        getTestService: function (responder, useStubData) {
+        getTestService: function (responder) {
             Interface.ensureImplements(responder, Responder);
 
             if (this.useStubData) {
