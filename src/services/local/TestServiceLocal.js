@@ -1,4 +1,4 @@
-function TestServiceLocal(responder) { // implements TestService
+function TestServiceLocal (responder) { // implements TestService
     Interface.ensureImplements(responder, Responder);
     this.responder = responder;
 }

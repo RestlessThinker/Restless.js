@@ -5,18 +5,30 @@
   <script type="text/javascript" src="Interfaces.js"></script>
   <script type="text/javascript" src="restless.js"></script>
   <script type="text/javascript" src="commands/GetItemCommand.js"></script>
+  <script type="text/javascript" src="commands/GetItemWithFilterCommand.js"></script>
   <script type="text/javascript" src="services/ServiceFactory.js"></script>
   <script type="text/javascript" src="services/local/TestServiceLocal.js"></script>
   <script type="text/javascript" src="services/remote/TestServiceRemote.js"></script>
+  <script type="text/javascript" src="services/local/TestFilterServiceLocal.js"></script>
+  <script type="text/javascript" src="services/remote/TestFilterServiceRemote.js"></script>
+  <script type="text/javascript" src="services/filters/log-filter.js"></script>
+  <script type="text/javascript" src="services/filters/cache-filter.js"></script>
 
   <script type="text/javascript">
 
+  /*
   new GetItemCommand('myIdString').setCallbacks(function (data) {
                                     console.log(data);
                                 }, function (data) {
                                     console.log('failed');
                                     console.log(data);
                                 }).execute();
+*/
+  new GetItemWithFilterCommand('someId').setCallbacks(function (data) {
+                                          console.log('success');
+                                        }, function (data) {
+                                          console.log('failure');
+                                        }).execute();
 
   </script>
 </head>

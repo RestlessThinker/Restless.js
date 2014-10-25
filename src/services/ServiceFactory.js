@@ -1,6 +1,6 @@
 ServiceFactory = (function () {
     return {
-        useStubData: true,
+        useStubData: false,
         getTestService: function (responder) {
             Interface.ensureImplements(responder, Responder);
 
@@ -8,6 +8,16 @@ ServiceFactory = (function () {
                 return new TestServiceLocal(responder);
             } else {
                 return new TestServiceRemote(responder);
+            }
+        },
+
+        getTestFilterService: function (responder) {
+            Interface.ensureImplements(responder, Responder);
+
+            if (this.useStubData) {
+                return new TestFilterServiceLocal(responder);
+            } else {
+                return new TestFilterServiceRemote(responder);
             }
         }
     }

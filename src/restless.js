@@ -22,17 +22,45 @@ CommandAdapter.prototype.setFault = function (data) {
 
 
 
-function ServiceFilterAdapter(responder) {
+function FilterChain() { // implements AsyncFilter
+    this.data = null;
+    this.next = null;
+}
+
+FilterChain.prototype.doFilter = function () {};
+
+FilterChain.prototype.addFilter = function (filter) {
+    Interface.ensureImplements(filter, AsyncFilter);
+    this.next = filter;
+}
+
+
+
+
+function ServiceFilterAdapter(responder) { // implements AsyncFilter
     Interface.ensureImplements(responder, Responder);
     this.responder = responder;
+    this.preFilterStack = null;
+    this.data;
+}
+
+ServiceFilterAdapter.prototype.doFilter = function (data) {
+    if (this.preFilterStack) {
+        this.data = this.preFilterStack.doFilter(data);
+    } else {
+        this.data = data;
+    }
+    return this.data;
 }
 
 ServiceFilterAdapter.prototype.invoke = function (url, method, data) {
+    this.doFilter(data);
+    console.log(this.data);
     var _this = this;
     return $.ajax({
             type: method,
             url: url,
-            data: data,
+            data: this.data,
             dataType: 'json'
            }).then(function (data) {
                 _this.responder.setResult(data);
