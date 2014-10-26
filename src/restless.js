@@ -22,9 +22,10 @@ CommandAdapter.prototype.setFault = function (data) {
 
 
 
-function FilterChain() { // implements AsyncFilter
+function FilterChain(responder) { // implements AsyncFilter
     this.data = null;
     this.next = null;
+    this.responder = responder || null;
 }
 
 FilterChain.prototype.doFilter = function () {};
@@ -41,26 +42,25 @@ function ServiceFilterAdapter(responder) { // implements AsyncFilter
     Interface.ensureImplements(responder, Responder);
     this.responder = responder;
     this.preFilterStack = null;
-    this.data;
 }
 
 ServiceFilterAdapter.prototype.doFilter = function (data) {
+    var newData = data;
     if (this.preFilterStack) {
-        this.data = this.preFilterStack.doFilter(data);
-    } else {
-        this.data = data;
+        Interface.ensureImplements(this.preFilterStack, AsyncFilter);
+        newData = this.preFilterStack.doFilter(data);
     }
-    return this.data;
+    return newData;
 }
 
 ServiceFilterAdapter.prototype.invoke = function (url, method, data) {
-    this.doFilter(data);
-    console.log(this.data);
+    var newData = this.doFilter(data);
+    if (!newData) return;
     var _this = this;
     return $.ajax({
             type: method,
             url: url,
-            data: this.data,
+            data: newData,
             dataType: 'json'
            }).then(function (data) {
                 _this.responder.setResult(data);

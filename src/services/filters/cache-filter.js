@@ -1,13 +1,13 @@
-function CacheFilter() { // implements AsyncFilter
-    FilterChain.call(this);
+function CacheFilter(responder) { // implements AsyncFilter
+    FilterChain.call(this, responder);
 }
 
 CacheFilter.prototype = Object.create(FilterChain.prototype);
 
 CacheFilter.prototype.doFilter = function (data) {
-    this.data = data + 'AppendedFromCacheFilter';
-    if (this.next) {
-        this.data = this.next.doFilter(this.data);
-    }
-    return this.data;
+    // simulating cache found
+    // invoke the responder success and return false
+    var newData = 'newData';
+    this.responder.setResult(newData);
+    return false;
 }

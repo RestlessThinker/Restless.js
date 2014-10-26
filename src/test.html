@@ -26,6 +26,7 @@
 */
   new GetItemWithFilterCommand('someId').setCallbacks(function (data) {
                                           console.log('success');
+                                          console.log('success data is: ' + data);
                                         }, function (data) {
                                           console.log('failure');
                                         }).execute();

@@ -5,11 +5,11 @@ function TestFilterServiceRemote (responder) {
 TestFilterServiceRemote.prototype = Object.create(ServiceFilterAdapter.prototype);
 
 TestFilterServiceRemote.prototype.doFilter = function (data) {
-    var cacheFilter = new CacheFilter();
+    var cacheFilter = new CacheFilter(this.responder);
     var logFilter = new LogFilter();
     logFilter.addFilter(cacheFilter);
     this.preFilterStack = logFilter;
-    ServiceFilterAdapter.prototype.doFilter.call(this, data);
+    return ServiceFilterAdapter.prototype.doFilter.call(this, data);
 }
 
 TestFilterServiceRemote.prototype.getItemById = function (itemId) {

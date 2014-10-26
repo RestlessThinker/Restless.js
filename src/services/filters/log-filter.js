@@ -5,9 +5,9 @@ function LogFilter() { // implements AsyncFilter
 LogFilter.prototype = Object.create(FilterChain.prototype);
 
 LogFilter.prototype.doFilter = function (data) {
-    this.data = data + 'AppendedFromLogFilter';
+    var newData = data + 'AppendedFromLogFilter';
     if (this.next) {
-        this.data = this.next.doFilter(this.data);
+        newData = this.next.doFilter(newData);
     }
-    return this.data;
+    return newData;
 }
