@@ -5,6 +5,5 @@ function TestServiceRemote(responder) { // implements TestService
 TestServiceRemote.prototype = Object.create(ServiceFilterAdapter.prototype);
 
 TestServiceRemote.prototype.getItem = function (itemId) {
-    // can add better implementation for super()
     return ServiceFilterAdapter.prototype.invoke.call(this, 'http://localhost/getItem', 'GET', itemId);
 }

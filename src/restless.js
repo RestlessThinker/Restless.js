@@ -38,13 +38,14 @@ FilterChain.prototype.addFilter = function (filter) {
 
 
 
-function ServiceFilterAdapter(responder) { // implements AsyncFilter
+function ServiceFilterAdapter(responder) {
     Interface.ensureImplements(responder, Responder);
     this.responder = responder;
     this.preFilterStack = null;
+    this.postFilterStack = null;
 }
 
-ServiceFilterAdapter.prototype.doFilter = function (data) {
+ServiceFilterAdapter.prototype.doPreFilter = function (data) {
     var newData = data;
     if (this.preFilterStack) {
         Interface.ensureImplements(this.preFilterStack, AsyncFilter);
@@ -53,8 +54,17 @@ ServiceFilterAdapter.prototype.doFilter = function (data) {
     return newData;
 }
 
+ServiceFilterAdapter.prototype.doPostFilter = function (data) {
+    var postData = data;
+    if (this.postFilterStack) {
+        Interface.ensureImplements(this.postFilterStack, AsyncFilter);
+        postData = this.postFilterStack.doFilter(data);
+    }
+    return postData;
+}
+
 ServiceFilterAdapter.prototype.invoke = function (url, method, data) {
-    var newData = this.doFilter(data);
+    var newData = this.doPreFilter(data);
     if (!newData) return;
     var _this = this;
     return $.ajax({
@@ -63,7 +73,8 @@ ServiceFilterAdapter.prototype.invoke = function (url, method, data) {
             data: newData,
             dataType: 'json'
            }).then(function (data) {
-                _this.responder.setResult(data);
+                var postData = _this.doPostFilter(data);
+                _this.responder.setResult(postData);
            }, function (data) {
                 _this.responder.setFault(data);
            });
