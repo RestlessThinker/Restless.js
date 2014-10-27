@@ -11,7 +11,7 @@ Restless.js also has the ability to return stub data from your service, keeping 
 
 ### Interfaces you say? ###
 
-Restless.js implements the Interface implemenation as seen in the book [Pro JavaScript Design Patterns: The Essentials of Object-Oriented JavaScript Programming](http://www.amazon.com/gp/product/159059908X/ref=as_li_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=159059908X&linkCode=as2&tag=theresminofad-20&linkId=ON3SQFSLM2F42S34). 
+Restless.js implements the [Interface implementation](https://github.com/RestlessThinker/Javascript-Interface) as seen in the book [Pro JavaScript Design Patterns: The Essentials of Object-Oriented JavaScript Programming](http://www.amazon.com/gp/product/159059908X/ref=as_li_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=159059908X&linkCode=as2&tag=theresminofad-20&linkId=ON3SQFSLM2F42S34). 
 
 ### Example invoking a service ###
 
