@@ -2,22 +2,36 @@
 <head>
   <script type="text/javascript" src="vendor/jquery-1.6.min.js"></script>
   <script type="text/javascript" src="vendor/interface.js"></script>
+  <script type="text/javascript" src="vendor/async.js"></script>
   <script type="text/javascript" src="Interfaces.js"></script>
   <script type="text/javascript" src="restless.js"></script>
   <script type="text/javascript" src="commands/GetItemCommand.js"></script>
   <script type="text/javascript" src="commands/GetItemWithFilterCommand.js"></script>
+  <script type="text/javascript" src="commands/GetQueueRequestCommand.js"></script>
   <script type="text/javascript" src="services/ServiceFactory.js"></script>
   <script type="text/javascript" src="services/local/TestServiceLocal.js"></script>
   <script type="text/javascript" src="services/remote/TestServiceRemote.js"></script>
   <script type="text/javascript" src="services/local/TestFilterServiceLocal.js"></script>
   <script type="text/javascript" src="services/remote/TestFilterServiceRemote.js"></script>
+  <script type="text/javascript" src="services/remote/QueueServiceRemote.js"></script>
   <script type="text/javascript" src="services/filters/log-filter.js"></script>
   <script type="text/javascript" src="services/filters/cache-filter.js"></script>
   <script type="text/javascript" src="services/filters/ember-object-encoder-filter.js"></script>
 
   <script type="text/javascript">
 
-  /*
+  function actionGetItem() {
+    var command = new GetItemCommand('myIdString');
+    command.setCallbacks(
+      function (data) {
+        console.log(data);
+      }, function (data) {
+        console.log('failed');
+        console.log(data);
+    });
+    command.execute();
+
+    /*
   new GetItemCommand('myIdString').setCallbacks(function (data) {
                                     console.log(data);
                                 }, function (data) {
@@ -25,14 +39,38 @@
                                     console.log(data);
                                 }).execute();
 */
-  new GetItemWithFilterCommand('someId').setCallbacks(function (data) {
+  }
+
+  function actionGetItemWithFilter() {
+    new GetItemWithFilterCommand('someId').setCallbacks(function (data) {
                                           console.log('success');
                                           console.log('success data is: ' + data);
+                                          console.table(data);
                                         }, function (data) {
                                           console.log('failure');
                                         }).execute();
+  }
+
+  function actionExecuteCommandQueue() {
+    var queues = [new GetQueueRequestCommand(1),
+                  new GetQueueRequestCommand(2),
+                  new GetQueueRequestCommand(3)];
+    var queue = new RestlessCommandQueue();
+    queue.addCommands(queues);
+    queue.executeSeries(function (errors, arrayOfResults) {
+      console.table(arrayOfResults);
+    });
+  }
 
   </script>
 </head>
+<body>
 
+<a href="javascript:actionGetItem()">Get Item without filter</a>
+<br /><br />
+<a href="javascript:actionGetItemWithFilter()">Get Item with filter</a>
+<br /><br />
+<a href="javascript:actionExecuteCommandQueue()">Execute queue</a>
+
+</body>
 </html>

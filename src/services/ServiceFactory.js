@@ -19,6 +19,12 @@ ServiceFactory = (function () {
             } else {
                 return new TestFilterServiceRemote(responder);
             }
+        },
+
+        getQueueService: function (responder) {
+            Interface.ensureImplements(responder, Responder);
+
+            return new QueueServiceRemote(responder);
         }
     }
 })();

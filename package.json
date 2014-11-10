@@ -1,0 +1,8 @@
+{
+  "name": "restless.js-example",
+  "main": "server.js",
+  "dependencies": {
+    "express": "3.5.1",
+    "sleep": "1.1.8"
+  }
+}

@@ -13,11 +13,11 @@ TestFilterServiceRemote.prototype.doPreFilter = function (data) {
 }
 
 TestFilterServiceRemote.prototype.doPostFilter = function (data) {
-    var emberEncoder = new EmberObjectEncoderfilter();
+    var emberEncoder = new EmberObjectEncoderFilter();
     this.postFilterStack = emberEncoder;
     return ServiceFilterAdapter.prototype.doPostFilter.call(this, data);
 }
 
 TestFilterServiceRemote.prototype.getItemById = function (itemId) {
-    return ServiceFilterAdapter.prototype.invoke.call(this, 'http://localhost/getItemById', 'GET', itemId);
+    return ServiceFilterAdapter.prototype.invoke.call(this, 'http://localhost:3000/getItemById', 'GET', itemId);
 }

@@ -7,7 +7,7 @@ CacheFilter.prototype = Object.create(FilterChain.prototype);
 CacheFilter.prototype.doFilter = function (data) {
     // simulating cache found
     // invoke the responder success and return false
-    var newData = 'newData';
+    var newData = 'cachedDataFromFilter';
     this.responder.setResult(newData);
     return false;
 }
