@@ -1,13 +1,19 @@
 function CommandAdapter() { // implements Responder
     this.resultCallback = null;
     this.faultCallback = null;
+    this.alwaysCallback = null;
 }
 
 CommandAdapter.prototype.execute = function () {};
 
-CommandAdapter.prototype.setCallbacks = function (resultHandler, faultHandler) {
+CommandAdapter.prototype.then = function (resultHandler, faultHandler) {
     this.resultCallback = resultHandler || null;
     this.faultCallback = faultHandler || null;
+    return this;
+}
+
+CommandAdapter.prototype.always = function (alwaysHandler) {
+    this.alwaysCallback = alwaysHandler || null;
     return this;
 }
 
@@ -17,6 +23,10 @@ CommandAdapter.prototype.setResult = function (data) {
 
 CommandAdapter.prototype.setFault = function (data) {
     this.faultCallback(data);
+}
+
+CommandAdapter.prototype.setAlways = function (data) {
+    this.alwaysCallback(data);
 }
 
 
@@ -77,6 +87,8 @@ ServiceFilterAdapter.prototype.invoke = function (url, method, data) {
                 _this.responder.setResult(postData);
            }, function (data) {
                 _this.responder.setFault(data);
+           }).always(function (data) {
+                _this.responder.setAlways(data);
            });
 }
 

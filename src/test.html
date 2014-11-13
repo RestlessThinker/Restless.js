@@ -22,27 +22,31 @@
 
   function actionGetItem() {
     var command = new GetItemCommand('myIdString');
-    command.setCallbacks(
+    command.then(
       function (data) {
         console.log(data);
       }, function (data) {
         console.log('failed');
         console.log(data);
+    }).always(function (data) {
+        console.log('always');
     });
     command.execute();
 
     /*
-  new GetItemCommand('myIdString').setCallbacks(function (data) {
+  new GetItemCommand('myIdString').then(function (data) {
                                     console.log(data);
                                 }, function (data) {
                                     console.log('failed');
                                     console.log(data);
+                                }).always(function (data) {
+                                    console.log('always');
                                 }).execute();
 */
   }
 
   function actionGetItemWithFilter() {
-    new GetItemWithFilterCommand('someId').setCallbacks(function (data) {
+    new GetItemWithFilterCommand('someId').then(function (data) {
                                           console.log('success');
                                           console.log('success data is: ' + data);
                                           console.table(data);

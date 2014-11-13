@@ -16,12 +16,27 @@ Restless.js implements the [Interface implementation](https://github.com/Restles
 ### Example invoking a service ###
 
 ```
-new GetItemCommand('myIdString').setCallbacks(function (data) {
+new GetItemCommand('myIdString').then(function (data) {
                                     console.log(data);
                                 }, function (data) {
                                     console.log('failed');
                                     console.log(data);
+                                }).always(function (data) {
+                                    console.log('always');
                                 }).execute();
+```
+
+### Example invoking a queue of services ###
+
+```
+var queues = [new GetQueueRequestCommand(1),
+              new GetQueueRequestCommand(2),
+              new GetQueueRequestCommand(3)];
+var queue = new RestlessCommandQueue();
+    queue.addCommands(queues);
+    queue.executeSeries(function (errors, arrayOfResults) {
+        console.table(arrayOfResults);
+    });
 ```
 
 ### Tests ###
