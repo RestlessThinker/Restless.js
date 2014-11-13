@@ -1,7 +1,7 @@
 Restless.js
 ===========
 
-## A services framework for Javascript ##
+A services framework for Javascript
 
 ### Features ###
 
