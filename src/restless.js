@@ -18,15 +18,21 @@ CommandAdapter.prototype.always = function (alwaysHandler) {
 }
 
 CommandAdapter.prototype.setResult = function (data) {
-    this.resultCallback(data);
+    if (this.resultCallback) {
+        this.resultCallback(data);
+    }
 }
 
 CommandAdapter.prototype.setFault = function (data) {
-    this.faultCallback(data);
+    if (this.faultCallback) {
+        this.faultCallback(data);
+    }
 }
 
 CommandAdapter.prototype.setAlways = function (data) {
-    this.alwaysCallback(data);
+    if (this.alwaysCallback) {
+        this.alwaysCallback(data);
+    }
 }
 
 
@@ -106,6 +112,10 @@ function RestlessCommandQueue() {
         this.arrayOfResults[this.arrayOfCommands.indexOf(command)] = data;
     }
 
+    function assignFault(command, data) {
+        this.arrayOfErrors[this.arrayOfCommands.indexOf(command)] = data;
+    }
+
     this.assignResult = assignResult;
 }
 
@@ -121,18 +131,17 @@ RestlessCommandQueue.prototype.executeSeries = function (resultHandler) {
     for (var i = 0; i < commandCount; i++) {
         var command = this.commands[i];
         var _this = this;
-        var _i = i;
 
         Interface.ensureImplements(command, Command);
         this.arrayOfCommands[i] = command;
 
-        command.setCallbacks(function (data) {
+        command.then(function (data) {
             _this.assignResult(this, data);
             if (_this.arrayOfResults.length == commandCount) {
                 _this.resultCallback(_this.arrayOfErrors, _this.arrayOfResults);
             }
         }, function (data) {
-            _this.arrayOfErrors[_i] = data;
+            _this.assignFault(this, data);
             if (_this.arrayOfResults.length == commandCount) {
                 _this.resultCallback(_this.arrayOfErrors, _this.arrayOfResults);
             }
@@ -142,5 +151,26 @@ RestlessCommandQueue.prototype.executeSeries = function (resultHandler) {
 }
 
 RestlessCommandQueue.prototype.executeParallel = function () {
+    var tasks = [];
+    var commandCount = this.commands.length;
+    var _this = this;
+    for (var i = 0; i < commandCount; i++) {
+        var command = this.commands[i];
 
+        Interface.ensureImplements(command, Command);
+        this.arrayOfCommands[i] = command;
+
+        var task = function () {
+            command.then(function (data) {
+                _this.assignResult(this, data);
+            }, function (data) {
+                _this.assignFault(this, data);
+            }).execute();
+        }
+        tasks[i] = task;
+    }
+
+    async.parallel(tasks, function (errors, arrayOfResults) {
+        _this.resultCallback(_this.arrayOfErrors, _this.arrayOfResults);
+    });
 }

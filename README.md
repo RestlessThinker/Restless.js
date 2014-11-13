@@ -44,9 +44,17 @@ var queue = new RestlessCommandQueue();
     });
 ```
 
+### Examples ###
+
+Run
+```
+node server.js
+```
+Browse to http://localhost:3000. Open the browse console and click on one of the examples.
+
 ### Interfaces you say? ###
 
 Restless.js implements the [Interface implementation](https://github.com/RestlessThinker/Javascript-Interface) as seen in the book [Pro JavaScript Design Patterns: The Essentials of Object-Oriented JavaScript Programming](http://www.amazon.com/gp/product/159059908X/ref=as_li_tl?ie=UTF8&camp=1789&creative=390957&creativeASIN=159059908X&linkCode=as2&tag=theresminofad-20&linkId=ON3SQFSLM2F42S34). 
 
 ### Tests ###
-I haven't decided on a test framework yet (I'm leaning towards Mocha). I'll be adding the tests and more demos later.
+I haven't decided on a test framework yet (I'm leaning towards Mocha).
