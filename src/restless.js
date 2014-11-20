@@ -19,19 +19,19 @@ CommandAdapter.prototype.always = function (alwaysHandler) {
 
 CommandAdapter.prototype.setResult = function (data) {
     if (this.resultCallback) {
-        this.resultCallback(data);
+        return this.resultCallback(data);
     }
 }
 
 CommandAdapter.prototype.setFault = function (data) {
     if (this.faultCallback) {
-        this.faultCallback(data);
+        return this.faultCallback(data);
     }
 }
 
 CommandAdapter.prototype.setAlways = function (data) {
     if (this.alwaysCallback) {
-        this.alwaysCallback(data);
+        return this.alwaysCallback(data);
     }
 }
 
@@ -81,20 +81,26 @@ ServiceFilterAdapter.prototype.doPostFilter = function (data) {
 
 ServiceFilterAdapter.prototype.invoke = function (url, method, data) {
     var newData = this.doPreFilter(data);
-    if (!newData) return;
+    if (!newData) {
+        return;
+    }
     var _this = this;
     return $.ajax({
             type: method,
             url: url,
             data: newData,
             dataType: 'json'
-           }).then(function (data) {
-                var postData = _this.doPostFilter(data);
-                _this.responder.setResult(postData);
-           }, function (data) {
-                _this.responder.setFault(data);
+           }).then(function (data, textStatus, jqXHR) {
+                var postData = _this.doPostFilter(data, jqXHR);
+                return _this.responder.setResult(postData);
+           }, function (jqXHR) {
+                var postData = _this.doPostFilter(null, jqXHR);
+                if (!postData) {
+                    return;
+                }
+                return _this.responder.setFault(postData);
            }).always(function (data) {
-                _this.responder.setAlways(data);
+                return _this.responder.setAlways(data);
            });
 }
 
