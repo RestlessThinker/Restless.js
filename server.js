@@ -26,18 +26,18 @@ api.get('/getItemById', function (req, res) {
 
 api.get('/queue1', function (req, res) {
     console.log('queue1');
-    sleep.sleep(10);
+    //sleep.sleep(10);
     res.json({endpoint: 'queue1'});
 });
 
 api.get('/queue2', function (req, res) {
     console.log('queue2');
-    sleep.sleep(1);
+    //sleep.sleep(1);
     res.json({endpoint: 'queue2'});
 });
 
 api.get('/queue3', function (req, res) {
-    console.log('queue3');
+    //console.log('queue3');
     res.json({endpoint: 'queue3'});
 })
 

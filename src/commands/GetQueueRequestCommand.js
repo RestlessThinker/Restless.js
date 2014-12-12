@@ -5,5 +5,5 @@ function GetQueueRequestCommand (queueNumber) {
 GetQueueRequestCommand.prototype = Object.create(CommandAdapter.prototype);
 
 GetQueueRequestCommand.prototype.execute = function () {
-    ServiceFactory.getQueueService(this).getQueueRequest(this.queueNumber);
+    return ServiceFactory.getQueueService(this).getQueueRequest(this.queueNumber);
 }
