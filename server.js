@@ -13,7 +13,7 @@ api.use(express.errorHandler());
 api.use(express.static(path.join(__dirname, 'src')));
 
 api.get('/', function (req, res) {
-  res.sendfile('src/test.html');
+  res.sendfile('demo/demo.html');
 });
 
 api.get('/getItem', function (req, res) {

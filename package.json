@@ -7,6 +7,9 @@
     "sleep": "1.1.8"
   },
   "devDependencies": {
+    "jquery": "2.1.1",
+    "jsdom": "1.5.0",
+    "xmlhttprequest": "1.6.0",
     "sinon": "~1.10.0",
     "mocha": "~2.0.1",
     "mocha-sinon": "~1.1.3",
