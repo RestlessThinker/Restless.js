@@ -12,7 +12,11 @@
     // you'd have to include superagent-promise
     if( typeof $ === 'undefined' ) {
         if( has_require ) {
-            $ = require('jquery')(require("jsdom").jsdom().parentWindow);
+            if (typeof document !== 'undefined') {
+                $ = require('jquery');
+            } else {
+                $ = require('jquery')(require("jsdom").jsdom().parentWindow);
+            }
             XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
         }
         else throw new Error('servicefilteradapter requires jquery, see http://jquery.org');
