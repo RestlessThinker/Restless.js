@@ -1,5 +1,6 @@
 {
-  "name": "restless.js-example",
+  "author": "RestlessThinker",
+  "name": "restless.js",
   "main": "server.js",
   "dependencies": {
     "grunt": "^0.4.5",
